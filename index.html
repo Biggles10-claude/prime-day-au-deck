@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#0b0c0e" />
-  <title>Amazon AU · Prime Big Deal Days 2026 · Buybox round2</title>
+  <title>Amazon AU · Prime Big Deal Days 2026 · Full scan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -180,6 +180,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+
+    .body-split {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      min-height: 0;
+      flex: 1 1 auto;
     }
 
     /* ---- thesis ---- */
@@ -549,6 +558,14 @@
 
     /* Landscape */
     @media (orientation: landscape), (min-width: 900px) {
+
+      .body-split {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        gap: 1rem;
+        align-items: stretch;
+      }
+
       .thesis-bar {
         grid-template-columns: repeat(3, 1fr);
       }
@@ -690,327 +707,263 @@
 <body>
   <div class="deck-root" id="deck">
     <div class="track" id="track">
-
-      <!-- 01 · Title -->
-      <section class="slide" data-label="thesis">
-        <div class="kicker"><span class="dot"></span> Amazon AU · Prime Big Deal Days · 29 Sep–5 Oct 2026</div>
-        <div class="head">
-          <h1 class="claim">Buybox refresh — <em>Melbourne 3000</em>.</h1>
-          <p class="subclaim">86 ASINs scraped. 85 buyable. 1 unavailable (Ninja Double Stack XL). Snapshot 2026-09-30 00:04 AWST.</p>
-          <div class="thesis-bar">
-            <div class="thesis-pill"><strong>Live buybox</strong>Prices from amazon.com.au zip 3000 — not Camel/Keepa</div>
-            <div class="thesis-pill"><strong>OOS demoted</strong>Ninja fryer flagged Unavailable even with stale price</div>
-            <div class="thesis-pill"><strong>Re-check /dp</strong>Stock and price move hourly</div>
+<section class="slide" data-label="thesis">
+        <div class="kicker"><span class="dot"></span> Amazon AU · Prime Big Deal Days 2026 · Full scan</div>
+        <div class="body-split">
+          <div>
+            <h1 class="claim">Full scan: <em>146</em> live includes.</h1>
+            <p class="subclaim">Buybox re-check at Melbourne zip 3000 — expanded past the prior 84. History still unverified (Camel/Keepa blocked).</p>
+            <div class="thesis-bar">
+              <div class="thesis-pill"><strong>Expanded pool</strong>686 ASINs scraped · prior 84 + OZB/ext seeds</div>
+              <div class="thesis-pill"><strong>OOS tracked</strong>11 unavailable vs live buybox</div>
+              <div class="thesis-pill"><strong>Re-check /dp</strong>Prices move hourly · ends 5 Oct AEDT</div>
+            </div>
+          </div>
+          <div class="hero-kpi" role="img" aria-label="Key counts">
+            <div class="kpi accent"><div class="n">146</div><div class="lbl">Includes</div></div>
+            <div class="kpi ok"><div class="n">675</div><div class="lbl">Buybox OK</div></div>
+            <div class="kpi"><div class="n">11</div><div class="lbl">Unavailable</div></div>
+            <div class="kpi"><div class="n">11</div><div class="lbl">Fails</div></div>
           </div>
         </div>
-        <div class="hero-kpi" role="img" aria-label="Key counts: 86 scraped, 85 buyable, 1 OOS, scrape 00:04 AWST">
-          <div class="kpi accent">
-            <div class="n">86</div>
-            <div class="lbl">Scraped</div>
-          </div>
-          <div class="kpi ok">
-            <div class="n">85</div>
-            <div class="lbl">Buyable</div>
-          </div>
-          <div class="kpi">
-            <div class="n">1</div>
-            <div class="lbl">Unavailable</div>
-          </div>
-          <div class="kpi">
-            <div class="n">0</div>
-            <div class="lbl">Fails</div>
-          </div>
-        </div>
-        <div class="meta">
-          <span>Round2 · 2026-09-30 00:04 AWST · zip 3000</span>
-          <span>01 / thesis</span>
-        </div>
+        <div class="meta"><span>Full scan · 2026-09-30 02:55 AWST · zip 3000</span><span>01 / thesis</span></div>
       </section>
 
-      <!-- 02 · How to read -->
-      <section class="slide" data-label="tiers">
+<section class="slide" data-label="tiers">
         <div class="kicker"><span class="dot"></span> How to read</div>
-        <div class="head">
-          <h2 class="claim">Four labels. One rule: re-check live.</h2>
-        </div>
+        <div class="head"><h2 class="claim">Four labels. One rule: re-check live.</h2></div>
         <div class="card-grid tiers">
-          <div class="info-card atl-tone">
-            <strong>Buy pick</strong>
-            <span>In-stock buybox price. Prior editor “buy now” shortlist — not a Camel ATL claim this run.</span>
-          </div>
-          <div class="info-card near-tone">
-            <strong>Watch</strong>
-            <span>Strong live price near recent sale floors (editor/OZB notes). Confirm history yourself.</span>
-          </div>
-          <div class="info-card">
-            <strong>Real discount</strong>
-            <span>Meaningful cut vs listed / street RRP — treat inflated robot-vac RRPs carefully.</span>
-          </div>
-          <div class="info-card bad-tone">
-            <strong>Unavailable</strong>
-            <span>Currently unavailable / no buyable offer — ignore any leftover price field.</span>
-          </div>
+          <div class="info-card atl-tone"><strong>Buy pick</strong><span>In-stock buybox. Prior editor ATL/near kept only as soft labels — not re-proven Camel ATL.</span></div>
+          <div class="info-card near-tone"><strong>Watch</strong><span>Strong live price / near recent sale floors. Confirm history yourself.</span></div>
+          <div class="info-card"><strong>Real discount</strong><span>Clear cut vs list/OZB RRP — treat inflated robot-vac RRPs carefully.</span></div>
+          <div class="info-card bad-tone"><strong>Unavailable</strong><span>No buyable offer at zip 3000 — ignore leftover price fields.</span></div>
         </div>
-        <div class="meta">
-          <span>No Camel/Keepa ATL automation this run</span>
-          <span>02 / tiers</span>
-        </div>
+        <div class="meta"><span>No Camel/Keepa ATL automation this run</span><span>02 / tiers</span></div>
       </section>
 
-      <!-- 03 · Buy picks (ex-ATL minus Ninja) -->
-      <section class="slide" data-label="buy-picks">
+<section class="slide" data-label="buy-picks">
         <div class="kicker"><span class="dot"></span> Buy picks · in stock · tap to open AU listing</div>
-        <div class="head">
-          <h2 class="claim">Four <em>buy</em> picks still in stock.</h2>
-        </div>
+        <div class="head"><h2 class="claim">Top <em>buy</em> picks still in stock.</h2></div>
         <div class="deals">
-          <a class="deal" href="https://www.amazon.com.au/dp/B0DJDSZJX6" target="_blank" rel="noopener">
+          <a class="deal highlight" href="https://www.amazon.com.au/dp/B0DJDSZJX6" target="_blank" rel="noopener">
             <span class="badge buy">buy</span>
-            <span class="name">Blink Video Doorbell + Sync Module</span>
-            <span class="secondary">In stock · was July floor note</span>
+            <span class="name">Blink Video Doorbell System</span>
+            <span class="secondary">Prior ATL soft-label</span>
             <span class="price">$27.99</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CK42LW4C" target="_blank" rel="noopener">
+          <a class="deal" href="https://www.amazon.com.au/dp/B093W7RLYT" target="_blank" rel="noopener">
             <span class="badge buy">buy</span>
-            <span class="name">Samsung Galaxy SmartTag2 (4 Pack)</span>
-            <span class="secondary">In stock · 4-pack</span>
-            <span class="price">$69</span>
-          </a>
-          <a class="deal highlight" href="https://www.amazon.com.au/dp/B093W7RLYT" target="_blank" rel="noopener">
-            <span class="badge buy">buy</span>
-            <span class="name">Shark Cordless Vacuum IZ102</span>
-            <span class="secondary">In stock · was $399-class list</span>
+            <span class="name">Shark Cordless Vacuum with Self Cleanin…</span>
+            <span class="secondary">Prior ATL soft-label</span>
             <span class="price">$189</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0GJTNZS4Z" target="_blank" rel="noopener">
             <span class="badge buy">buy</span>
-            <span class="name">Philips Baristina Espresso</span>
-            <span class="secondary">In stock · list $599</span>
+            <span class="name">Philips Baristina Espresso Machine</span>
+            <span class="secondary">Prior ATL soft-label</span>
             <span class="price">$359</span>
           </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0CK42LW4C" target="_blank" rel="noopener">
+            <span class="badge buy">buy</span>
+            <span class="name">Samsung Galaxy SmartTag2 (4 Pack) Bluet…</span>
+            <span class="secondary">Prior ATL soft-label</span>
+            <span class="price">$69</span>
+          </a>
         </div>
-        <div class="meta">
-          <span>Ninja Double Stack XL moved to OOS slide</span>
-          <span>03 / buy picks</span>
-        </div>
+        <div class="meta"><span>Soft ATL labels from prior editors only</span><span>03 / buy-picks</span></div>
       </section>
 
-      <!-- 04 · Watch list -->
-      <section class="slide" data-label="watch">
+<section class="slide" data-label="watch">
         <div class="kicker"><span class="dot"></span> Watch list · strong live prices</div>
-        <div class="head">
-          <h2 class="claim">Eight <em>watch</em> deals — confirm history.</h2>
-        </div>
+        <div class="head"><h2 class="claim">Up to eight <em>watch</em> deals — confirm history.</h2></div>
         <div class="deals">
-          <a class="deal" href="https://www.amazon.com.au/dp/B00GGKMNTO" target="_blank" rel="noopener">
+          <a class="deal highlight" href="https://www.amazon.com.au/dp/B00GGKMNTO" target="_blank" rel="noopener">
             <span class="badge near">watch</span>
-            <span class="name">Bosch 91-pc V-Line bits</span>
-            <span class="secondary">Common sale floor</span>
+            <span class="name">Bosch Accessories 91-Piece V-Line Titan…</span>
+            <span class="secondary">Was $54.81</span>
             <span class="price">$29.99</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0CXJBH48R" target="_blank" rel="noopener">
+            <span class="badge near">watch</span>
+            <span class="name">Bose QuietComfort SC Wireless Noise Can…</span>
+            <span class="secondary">Was $499.95</span>
+            <span class="price">$243</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0CVN8HWG7" target="_blank" rel="noopener">
+            <span class="badge near">watch</span>
+            <span class="name">Alienware AW2725DF 27&quot; QD OLED Gaming M…</span>
+            <span class="secondary">Was $1,359</span>
+            <span class="price">$886.26</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0D6V4K8L3" target="_blank" rel="noopener">
+            <span class="badge near">watch</span>
+            <span class="name">dreame X40 Ultra Robotic Vacuum with Re…</span>
+            <span class="secondary">Was $2,799</span>
+            <span class="price">$712.49</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0CJTHYL9D" target="_blank" rel="noopener">
             <span class="badge near">watch</span>
-            <span class="name">Brother HL-L2445DW Laser</span>
-            <span class="secondary">Was $199 list</span>
+            <span class="name">Brother HL-L2445DW</span>
+            <span class="secondary">Was $169.99</span>
             <span class="price">$129.99</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0GJTHVD58" target="_blank" rel="noopener">
             <span class="badge near">watch</span>
-            <span class="name">Apple AirTag 4-pack (2nd gen)</span>
-            <span class="secondary">Competitive vs retail</span>
+            <span class="name">Apple AirTag 4 Pack ​​​​​​​(2nd Generat…</span>
+            <span class="secondary">Was $165</span>
             <span class="price">$149.95</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0DGJ8YC5N" target="_blank" rel="noopener">
             <span class="badge near">watch</span>
-            <span class="name">AirPods 4 with ANC</span>
-            <span class="secondary">Near recent lows</span>
+            <span class="name">Apple AirPods 4 with Active Noise Cance…</span>
+            <span class="secondary">Was $299</span>
             <span class="price">$195</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CXJBH48R" target="_blank" rel="noopener">
-            <span class="badge near">watch</span>
-            <span class="name">Bose QuietComfort SC</span>
-            <span class="secondary">Was $499.95</span>
-            <span class="price">$243</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0CQ2TBSPV" target="_blank" rel="noopener">
             <span class="badge near">watch</span>
-            <span class="name">Sennheiser Momentum 4</span>
+            <span class="name">Sennheiser Momentum 4 Wireless Headphon…</span>
             <span class="secondary">Was $579.95</span>
             <span class="price">$259</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0D6V4K8L3" target="_blank" rel="noopener">
-            <span class="badge near">watch</span>
-            <span class="name">Dreame X40 Ultra</span>
-            <span class="secondary">Deep robot-vac promo</span>
-            <span class="price">$712.49</span>
-          </a>
-          <a class="deal highlight" href="https://www.amazon.com.au/dp/B0CVN8HWG7" target="_blank" rel="noopener">
-            <span class="badge near">watch</span>
-            <span class="name">Alienware AW2725DF 27″ QD-OLED</span>
-            <span class="secondary">Lowest Amazon note</span>
-            <span class="price">$886.26</span>
-          </a>
         </div>
-        <div class="meta">
-          <span>SmartTag2 1-pack omitted · 4-pack is the buy pick</span>
-          <span>04 / watch</span>
-        </div>
+        <div class="meta"><span>Each ASIN once across highlight grids</span><span>04 / watch</span></div>
       </section>
 
-      <!-- 05 · Real discounts -->
-      <section class="slide" data-label="real discounts">
+<section class="slide" data-label="real discounts">
         <div class="kicker"><span class="dot"></span> Best real discounts · not on prior slides</div>
-        <div class="head">
-          <h2 class="claim">Deep cuts — treat RRPs with care.</h2>
-        </div>
+        <div class="head"><h2 class="claim">Deep cuts — treat RRPs with care.</h2></div>
         <div class="deals">
-          <a class="deal" href="https://www.amazon.com.au/dp/B0GJ5KW37C" target="_blank" rel="noopener">
+          <a class="deal highlight" href="https://www.amazon.com.au/dp/B0B4H83QGP" target="_blank" rel="noopener">
             <span class="badge real">real</span>
-            <span class="name">ECOVACS DEEBOT T80 Omni</span>
-            <span class="secondary">Listed was $2,299</span>
-            <span class="price">$649</span>
+            <span class="name">Shark Steam &amp; Scrub Automatic Mop</span>
+            <span class="secondary">Was $2,999</span>
+            <span class="price">$141.55</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0DSPVTBYH" target="_blank" rel="noopener">
+          <a class="deal" href="https://www.amazon.com.au/dp/B07K142VYD" target="_blank" rel="noopener">
             <span class="badge real">real</span>
-            <span class="name">ECOVACS DEEBOT T50 Omni</span>
-            <span class="secondary">Listed was $1,499</span>
+            <span class="name">Bosch 3.6V Cordless Window &amp; Glass Clea…</span>
+            <span class="secondary">Was $599</span>
+            <span class="price">$83</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0D5M5NH7V" target="_blank" rel="noopener">
+            <span class="badge real">real</span>
+            <span class="name">Oral-B [GENUINE] iO Advanced Clean Elec…</span>
+            <span class="secondary">Was $119.99</span>
+            <span class="price">$17.10</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B084YX4XJP" target="_blank" rel="noopener">
+            <span class="badge real">real</span>
+            <span class="name">Logitech G512 Carbon Lightsync RGB Mech…</span>
+            <span class="secondary">Was $369.95</span>
+            <span class="price">$93.64</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0CTTL9R7Z" target="_blank" rel="noopener">
+            <span class="badge real">real</span>
+            <span class="name">TERRAMASTER D4-320 External Hard Drive…</span>
+            <span class="secondary">Was $1,499.99</span>
+            <span class="price">$249.99</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0C8Y1TSKZ" target="_blank" rel="noopener">
+            <span class="badge real">real</span>
+            <span class="name">SKIN1004 [Hudson&#x27;s Pick] Poremizing Qui…</span>
+            <span class="secondary">Was $54.52</span>
+            <span class="price">$14.72</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0GZVV4D94" target="_blank" rel="noopener">
+            <span class="badge real">real</span>
+            <span class="name">roborock Q7T+ Robot Vacuum &amp; Mop</span>
+            <span class="secondary">Was $1,599</span>
+            <span class="price">$279</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0GLR3HL2P" target="_blank" rel="noopener">
+            <span class="badge real">real</span>
+            <span class="name">Blink Outdoor Camera 2K+ and Mini 2K+ B…</span>
+            <span class="secondary">Was $308</span>
+            <span class="price">$91</span>
+          </a>
+        </div>
+        <div class="meta"><span>No overlap with buy / watch</span><span>05 / real discounts</span></div>
+      </section>
+
+<section class="slide" data-label="new">
+        <div class="kicker"><span class="dot"></span> Expansion · not in prior 84 includes</div>
+        <div class="head"><h2 class="claim">New includes from the <em>expanded</em> pool.</h2></div>
+        <div class="deals">
+          <a class="deal highlight" href="https://www.amazon.com.au/dp/B0GZJM54MJ" target="_blank" rel="noopener">
+            <span class="badge near">new</span>
+            <span class="name">Blink Outdoor 4 (1pk System) + FREE Bli…</span>
+            <span class="secondary">New vs prior 84 includes</span>
+            <span class="price">$35</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0GKNLLS8X" target="_blank" rel="noopener">
+            <span class="badge near">new</span>
+            <span class="name">ECOVACS DEEBOT X8 MAX PRO Omni Robot Va…</span>
+            <span class="secondary">New vs prior 84 includes</span>
+            <span class="price">$699</span>
+          </a>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0GVMLY34V" target="_blank" rel="noopener">
+            <span class="badge near">new</span>
+            <span class="name">ECOVACS DEEBOT T30S Pro Plus Black Robo…</span>
+            <span class="secondary">New vs prior 84 includes</span>
             <span class="price">$499</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0FXKLY3WN" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Puma Men’s Velocity Nitro 5</span>
-            <span class="secondary">Listed was $200</span>
-            <span class="price">$79.99</span>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0D4831Q5Z" target="_blank" rel="noopener">
+            <span class="badge near">new</span>
+            <span class="name">Blink Outdoor 4 — Wireless smart securi…</span>
+            <span class="secondary">New vs prior 84 includes</span>
+            <span class="price">$58.99</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CLCCVCDQ" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Philips Air Purifier 1000i</span>
-            <span class="secondary">Listed was $349</span>
-            <span class="price">$141.50</span>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0G5YDSZBV" target="_blank" rel="noopener">
+            <span class="badge near">new</span>
+            <span class="name">roborock Qrevo Curv 2 Flow Robot Vacuum…</span>
+            <span class="secondary">New vs prior 84 includes</span>
+            <span class="price">$799</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0GNM34JR6" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Harman Kardon Luna 2</span>
-            <span class="secondary">Listed was $229.95</span>
-            <span class="price">$94.05</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0D22DXB1Y" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Ninja Detect Blender Pro</span>
-            <span class="secondary">Listed was $369</span>
-            <span class="price">$166.25</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0F8NSBK82" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Dell S3225QC 32″ QD-OLED</span>
-            <span class="secondary">Listed was $1,499</span>
-            <span class="price">$811.70</span>
-          </a>
-          <a class="deal highlight" href="https://www.amazon.com.au/dp/B0982R2MCJ" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Nikon Z fc + 16-50mm kit</span>
-            <span class="secondary">Listed was $2,049</span>
-            <span class="price">$1,149</span>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0CP7S3117" target="_blank" rel="noopener">
+            <span class="badge near">new</span>
+            <span class="name">GL.iNet GL-MT6000 Flint 2 Wi-Fi 6 Gamin…</span>
+            <span class="secondary">New vs prior 84 includes</span>
+            <span class="price">$205.59</span>
           </a>
         </div>
-        <div class="meta">
-          <span>No overlap with buy / watch slides</span>
-          <span>05 / real discounts</span>
-        </div>
+        <div class="meta"><span>63 new ASINs made include cut overall</span><span>06 / new</span></div>
       </section>
 
-      <!-- 06 · Ninja OOS -->
-      <section class="slide" data-label="oos">
-        <div class="kicker"><span class="dot"></span> Stock callout · demoted from buy highlights</div>
-        <div class="head">
-          <h2 class="claim"><em>Unavailable</em> — Ninja Double Stack XL.</h2>
-        </div>
+<section class="slide" data-label="oos">
+        <div class="kicker"><span class="dot"></span> Stock callouts · demoted / unavailable</div>
+        <div class="head"><h2 class="claim"><em>Unavailable</em> — skip stale prices.</h2></div>
         <div class="deals">
           <a class="deal oos-card" href="https://www.amazon.com.au/dp/B0CZXW5XR3" target="_blank" rel="noopener">
             <span class="badge oos">Unavailable</span>
-            <span class="name">Ninja Double Stack XL Air Fryer</span>
-            <span class="secondary">Currently unavailable. We don't know when or if this item will be back in stock.</span>
+            <span class="name">Ninja Double Stack XL Double Drawer Ver…</span>
+            <span class="secondary">Currently unavailable. We don&#x27;t know when or if this item will be bac…</span>
             <span class="price">$170.05</span>
           </a>
         </div>
-        <div class="card-grid" style="flex:0 0 auto; margin-top:0.15rem;">
-          <div class="info-card bad-tone">
-            <strong>Do not buy on stale price</strong>
-            <span>Buybox still exposes $170.05 but offer is not purchaseable at zip 3000. Re-open /dp if it returns; verify before checkout.</span>
-          </div>
-          <div class="info-card">
-            <strong>Was a Day-1 highlight</strong>
-            <span>Prior round kept it on the ATL shortlist at the same figure. Round2 demotes it until stock returns.</span>
-          </div>
-        </div>
-        <div class="meta">
-          <span>ASIN B0CZXW5XR3 · fetched ~23:49 AWST</span>
-          <span>06 / oos</span>
-        </div>
+        <div class="meta"><span>11 OOS/unavailable in this full scan</span><span>07 / oos</span></div>
       </section>
 
-      <!-- 07 · Caveat -->
-      <section class="slide" data-label="caveat">
+<section class="slide" data-label="caveat">
         <div class="kicker"><span class="dot"></span> Before you buy</div>
-        <div class="head">
-          <h2 class="claim">Buybox verified. History is still on you.</h2>
-        </div>
+        <div class="head"><h2 class="claim">Buybox verified. History is still on you.</h2></div>
         <div class="steps">
-          <div class="step">
-            <div>
-              <strong>Buybox checked</strong>
-              <span>86/86 ASINs on amazon.com.au · finished 2026-09-30 00:04 AWST · Melbourne zip 3000.</span>
-            </div>
-          </div>
-          <div class="step">
-            <div>
-              <strong>History gaps</strong>
-              <span>Camel/Keepa blocked here — no ATL claim from missing charts. Open history in a browser.</span>
-            </div>
-          </div>
-          <div class="step">
-            <div>
-              <strong>Re-check /dp</strong>
-              <span>Prices and stock move hourly. Tap the card, confirm availability before checkout.</span>
-            </div>
-          </div>
-          <div class="step">
-            <div>
-              <strong>Skip fake RRP</strong>
-              <span>Grocery multipacks with inflated “was” stayed out. Robot-vac list prices are often aspirational.</span>
-            </div>
-          </div>
+          <div class="step"><div><strong>Buybox checked</strong><span>675/686 OK on amazon.com.au · finished 2026-09-30 02:55 AWST · Melbourne zip 3000.</span></div></div>
+          <div class="step"><div><strong>History gaps</strong><span>Camel/Keepa blocked here — no ATL claim from missing charts. Open history in a browser.</span></div></div>
+          <div class="step"><div><strong>OZB live harvest blocked</strong><span>OzBargain returned 403 to automation this run — used prior OZB JSON + TechRadar/Tom's Guide/PowerUp ASINs.</span></div></div>
+          <div class="step"><div><strong>Re-check /dp</strong><span>Prices and stock move hourly. Tap the card before checkout. Event ends 11:59pm Mon 5 Oct AEDT.</span></div></div>
         </div>
-        <div class="meta">
-          <span>Event ends 11:59pm Mon 5 Oct AEDT</span>
-          <span>07 / caveat</span>
-        </div>
+        <div class="meta"><span>Event ends 11:59pm Mon 5 Oct AEDT</span><span>08 / caveat</span></div>
       </section>
 
-      <!-- 08 · Summary -->
-      <section class="slide" data-label="close">
+<section class="slide" data-label="close">
         <div class="kicker"><span class="dot"></span> Takeaways</div>
-        <div class="head">
-          <h2 class="claim">Buy stocked picks. Skip the OOS fryer.</h2>
-        </div>
+        <div class="head"><h2 class="claim">Buy stocked picks. Skip OOS leftovers.</h2></div>
         <div class="takeaways">
-          <div class="item accent">
-            <strong>Start with the 4 in-stock buys</strong>
-            <span>Blink, SmartTag2 4-pack, Shark IZ102, Baristina — live buybox at zip 3000.</span>
-          </div>
-          <div class="item">
-            <strong>Ninja Double Stack XL is Unavailable</strong>
-            <span>Ignore the leftover $170.05 field until Amazon shows a buyable offer again.</span>
-          </div>
-          <div class="item">
-            <strong>Confirm /dp before you pay</strong>
-            <span>Watch + deep-cut lists are live prices only — open Camel yourself for floors.</span>
-          </div>
+          <div class="item accent"><strong>146 includes after full scan</strong><span>Expanded past prior 84 · 63 new ASINs cleared the include gate.</span></div>
+          <div class="item"><strong>11 unavailable at zip 3000</strong><span>Ignore stale price fields on OOS cards until a buyable offer returns.</span></div>
+          <div class="item"><strong>Confirm /dp before you pay</strong><span>Live buybox only — open Camel yourself for floors. Fake grocery RRPs stayed excluded.</span></div>
         </div>
-        <div class="meta">
-          <span>Live deck · prime-day-au-deck · round2</span>
-          <span>08 / close</span>
-        </div>
+        <div class="meta"><span>Live deck · prime-day-au-deck · full scan</span><span>09 / close</span></div>
       </section>
 
     </div>
