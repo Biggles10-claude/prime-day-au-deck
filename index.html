@@ -6,13 +6,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#0b0c0e" />
   <title>Amazon AU · Prime Big Deal Days 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #0b0c0e;
       --panel: #12141a;
       --ink: #f2f1ec;
       --muted: #9a9aa3;
-      --dim: #5c5c66;
+      --dim: #8a8a93;
       --accent: #d4b56a;
       --accent-soft: rgba(212, 181, 106, 0.14);
       --line: rgba(255,255,255,0.10);
@@ -28,7 +31,7 @@
       --pad-b: max(0.75rem, var(--safe-b));
       --claim: clamp(1.15rem, 3.6vw + 0.55rem, 2.1rem);
       --body: clamp(0.82rem, 1.4vw + 0.45rem, 1rem);
-      --small: clamp(0.62rem, 1vw + 0.35rem, 0.75rem);
+      --small: clamp(0.68rem, 1vw + 0.38rem, 0.78rem);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -50,10 +53,10 @@
     }
 
     a {
-      color: var(--accent);
+      color: inherit;
       text-decoration: none;
     }
-    a:hover { text-decoration: underline; }
+    a:hover .name { text-decoration: underline; text-decoration-color: var(--accent); }
 
     .deck-root {
       position: relative;
@@ -82,7 +85,7 @@
         calc(var(--pad-b) + 2.4rem);
       display: flex;
       flex-direction: column;
-      gap: clamp(0.45rem, 1.4vh, 0.9rem);
+      gap: clamp(0.55rem, 1.5vh, 1rem);
       background: var(--bg);
     }
 
@@ -118,7 +121,7 @@
 
     .claim {
       font-size: var(--claim);
-      max-width: 24ch;
+      max-width: 22ch;
     }
 
     .claim em {
@@ -130,7 +133,7 @@
       margin: 0.45rem 0 0;
       font-size: var(--body);
       color: var(--muted);
-      max-width: 52ch;
+      max-width: 48ch;
       line-height: 1.45;
     }
 
@@ -141,7 +144,7 @@
       font-size: var(--body);
       color: var(--muted);
       line-height: 1.45;
-      max-width: 36ch;
+      max-width: 28ch;
     }
 
     .aside-note code,
@@ -166,6 +169,20 @@
 
     .head { flex-shrink: 0; }
 
+    .frame {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--panel);
+      min-height: 0;
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ---- thesis ---- */
     .thesis-bar {
       display: grid;
       grid-template-columns: 1fr;
@@ -193,6 +210,278 @@
       margin-bottom: 0.2rem;
     }
 
+    /* ---- hero KPI ---- */
+    .hero-kpi {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.7rem 0.85rem;
+      background: var(--panel);
+      align-content: stretch;
+    }
+
+    .hero-kpi .kpi {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0.45rem 0.35rem;
+      min-height: 0;
+    }
+
+    .hero-kpi .kpi .n {
+      font-size: clamp(1.6rem, 5vw + 0.6rem, 2.75rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hero-kpi .kpi.accent .n { color: var(--accent); }
+    .hero-kpi .kpi.ok .n { color: var(--ok); }
+
+    .hero-kpi .kpi .lbl {
+      margin-top: 0.25rem;
+      font-size: var(--small);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    /* ---- tier / count / caveat cards ---- */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      min-height: 0;
+      flex: 1 1 auto;
+      align-content: start;
+    }
+
+    .info-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.7rem 0.85rem;
+      background: var(--panel);
+      min-height: 0;
+    }
+
+    .info-card strong {
+      display: block;
+      font-size: clamp(0.85rem, 1.5vw + 0.4rem, 0.98rem);
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .info-card span {
+      font-size: clamp(0.72rem, 1.2vw + 0.35rem, 0.85rem);
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .info-card.atl-tone {
+      border-color: rgba(107,207,142,0.35);
+      background: rgba(107,207,142,0.08);
+    }
+    .info-card.atl-tone strong { color: var(--ok); }
+
+    .info-card.near-tone {
+      border-color: rgba(212,181,106,0.28);
+      background: var(--accent-soft);
+    }
+    .info-card.near-tone strong { color: var(--accent); }
+
+    .info-card.warn-tone {
+      border-color: rgba(224,160,96,0.35);
+      background: rgba(224,160,96,0.08);
+    }
+    .info-card.warn-tone strong { color: var(--warn); }
+
+    .counts {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      min-height: 0;
+      flex: 1 1 auto;
+      align-content: stretch;
+    }
+
+    .count-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.7rem 0.85rem;
+      background: var(--panel);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
+    }
+
+    .count-card .n {
+      font-size: clamp(1.8rem, 5.5vw + 0.5rem, 3rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink);
+    }
+
+    .count-card .lbl {
+      margin-top: 0.35rem;
+      font-size: var(--small);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .count-card.total { grid-column: 1 / -1; }
+    .count-card.total .n { color: var(--accent); }
+    .count-card.atl .n { color: var(--ok); }
+    .count-card.near .n { color: var(--accent); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      min-height: 0;
+      flex: 1 1 auto;
+      align-content: start;
+      counter-reset: step;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.7rem 0.85rem;
+      background: var(--panel);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.75rem;
+      align-items: start;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step, decimal-leading-zero);
+      font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+      font-size: var(--small);
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      padding-top: 0.15rem;
+    }
+
+    .step strong {
+      display: block;
+      font-size: clamp(0.85rem, 1.5vw + 0.4rem, 0.98rem);
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+    }
+
+    .step span {
+      font-size: clamp(0.72rem, 1.2vw + 0.35rem, 0.85rem);
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ---- deal cards ---- */
+    .deals {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      min-height: 0;
+      flex: 1 1 auto;
+      align-content: start;
+    }
+
+    .deal {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-template-rows: auto auto;
+      column-gap: 0.65rem;
+      row-gap: 0.15rem;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.7rem 0.85rem;
+      background: var(--panel);
+      min-height: 44px;
+    }
+
+    .deal .badge {
+      grid-row: 1 / span 2;
+      align-self: center;
+      font-size: clamp(0.7rem, 0.9vw + 0.4rem, 0.78rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 0.28rem 0.45rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+
+    .badge.atl {
+      background: var(--ok);
+      color: #0b0c0e;
+    }
+
+    .badge.near {
+      background: var(--accent);
+      color: #0b0c0e;
+    }
+
+    .badge.real {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+
+    .deal .name {
+      grid-column: 2;
+      grid-row: 1;
+      font-size: clamp(0.8rem, 1.3vw + 0.4rem, 0.95rem);
+      color: var(--ink);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      min-width: 0;
+    }
+
+    .deal .secondary {
+      grid-column: 2;
+      grid-row: 2;
+      font-size: clamp(0.68rem, 1vw + 0.35rem, 0.78rem);
+      color: var(--muted);
+      line-height: 1.3;
+      min-width: 0;
+    }
+
+    .deal .price {
+      grid-column: 3;
+      grid-row: 1 / span 2;
+      align-self: center;
+      font-size: clamp(0.95rem, 1.8vw + 0.4rem, 1.15rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+    }
+
+    .deal.highlight {
+      border-color: rgba(212,181,106,0.35);
+      background: var(--accent-soft);
+    }
+
+    .deal.highlight .price { color: var(--accent); }
+
+    /* ---- takeaways ---- */
     .takeaways {
       display: grid;
       grid-template-columns: 1fr;
@@ -200,13 +489,12 @@
       flex: 1 1 auto;
       min-height: 0;
       align-content: start;
-      overflow: auto;
     }
 
     .takeaways .item {
       border: 1px solid var(--line);
       border-radius: 10px;
-      padding: 0.65rem 0.8rem;
+      padding: 0.7rem 0.85rem;
       background: var(--panel);
     }
 
@@ -214,7 +502,7 @@
       display: block;
       font-size: clamp(0.85rem, 1.5vw + 0.4rem, 0.98rem);
       color: var(--ink);
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.25rem;
       letter-spacing: -0.01em;
     }
 
@@ -231,239 +519,18 @@
 
     .takeaways .item.accent strong { color: var(--accent); }
 
-    .counts {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.5rem;
-      flex: 1 1 auto;
-      min-height: 0;
-      align-content: start;
-    }
-
-    .count-card {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 0.75rem 0.85rem;
-      background: var(--panel);
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .count-card .n {
-      font-size: clamp(1.6rem, 4vw + 0.6rem, 2.4rem);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--ink);
-      line-height: 1;
-    }
-
-    .count-card .lbl {
-      font-size: var(--small);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .count-card.atl .n { color: var(--ok); }
-    .count-card.near .n { color: var(--accent); }
-    .count-card.real .n { color: var(--ink); }
-    .count-card.hist .n { color: var(--warn); }
-    .count-card.total {
-      grid-column: 1 / -1;
-      background: var(--accent-soft);
-      border-color: rgba(212,181,106,0.28);
-    }
-    .count-card.total .n { color: var(--accent); }
-
-    .deals {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.4rem;
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      align-content: start;
-      pointer-events: auto;
-      z-index: 6;
-      position: relative;
-    }
-
-    .deal {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 0.55rem 0.7rem;
-      align-items: center;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 0.55rem 0.7rem;
-      background: var(--panel);
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 140ms ease, background 140ms ease;
-    }
-
-    .deal:hover {
-      border-color: rgba(212,181,106,0.4);
-      background: #161922;
-      text-decoration: none;
-    }
-
-    .deal .badge {
-      font-size: clamp(0.55rem, 0.9vw + 0.3rem, 0.68rem);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 600;
-      padding: 0.28rem 0.45rem;
-      border-radius: 6px;
-      white-space: nowrap;
-    }
-
-    .badge.atl {
-      color: #0b0c0e;
-      background: var(--ok);
-    }
-    .badge.near {
-      color: #0b0c0e;
-      background: var(--accent);
-    }
-    .badge.real {
-      color: var(--ink);
-      background: rgba(255,255,255,0.08);
-      border: 1px solid var(--line);
-    }
-
-    .deal .name {
-      font-size: clamp(0.78rem, 1.3vw + 0.4rem, 0.95rem);
-      font-weight: 500;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
-      color: var(--ink);
-    }
-
-    .deal .price {
-      font-size: clamp(0.9rem, 1.5vw + 0.4rem, 1.1rem);
-      font-weight: 600;
-      color: var(--accent);
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: -0.02em;
-    }
-
-    .deal .was {
-      display: block;
-      font-size: var(--small);
-      color: var(--dim);
-      font-weight: 400;
-      text-decoration: line-through;
-      margin-top: 0.1rem;
-    }
-
-    .steps {
-      display: grid;
-      gap: 0.5rem;
-      flex: 1 1 auto;
-      min-height: 0;
-      align-content: start;
-      overflow: auto;
-    }
-
-    .step {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 0.7rem;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 0.65rem 0.8rem;
-      background: var(--panel);
-      align-items: start;
-    }
-
-    .step .num {
-      width: 1.6rem;
-      height: 1.6rem;
-      border-radius: 50%;
-      background: var(--accent-soft);
-      border: 1px solid rgba(212,181,106,0.35);
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--small);
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-
-    .step strong {
-      display: block;
-      font-size: clamp(0.85rem, 1.4vw + 0.4rem, 0.98rem);
-      margin-bottom: 0.15rem;
-    }
-
-    .step span {
-      font-size: clamp(0.72rem, 1.2vw + 0.35rem, 0.85rem);
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .sources {
-      display: grid;
-      gap: 0.45rem;
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow: auto;
-      align-content: start;
-    }
-
-    .sources a.row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.75rem;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 0.7rem 0.85rem;
-      background: var(--panel);
-      color: var(--ink);
-      text-decoration: none;
-    }
-
-    .sources a.row:hover {
-      border-color: rgba(212,181,106,0.4);
-    }
-
-    .sources a.row strong {
-      font-size: clamp(0.82rem, 1.3vw + 0.4rem, 0.95rem);
-    }
-
-    .sources a.row span {
-      font-size: var(--small);
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .warn-box {
-      border: 1px solid rgba(224,122,122,0.35);
-      background: rgba(224,122,122,0.08);
-      border-radius: 10px;
-      padding: 0.7rem 0.85rem;
-      font-size: clamp(0.75rem, 1.2vw + 0.35rem, 0.88rem);
-      color: #e8c8c8;
-      line-height: 1.4;
-    }
-
-    .warn-box strong { color: var(--bad); }
-
+    /* Landscape */
     @media (orientation: landscape), (min-width: 900px) {
       .thesis-bar {
         grid-template-columns: repeat(3, 1fr);
       }
 
-      .takeaways {
-        grid-template-columns: 1fr 1fr;
+      .hero-kpi {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .card-grid.tiers {
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .counts {
@@ -471,31 +538,51 @@
       }
 
       .count-card.total {
-        grid-column: auto;
+        grid-column: span 1;
       }
 
-      .deals.cols-2 {
-        grid-template-columns: 1fr 1fr;
+      .deals {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .claim { max-width: 28ch; }
+      .steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .takeaways {
+        grid-template-columns: 1fr;
+      }
     }
 
+    @media (orientation: landscape) and (min-width: 900px) {
+      .takeaways {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Narrow portrait */
     @media (orientation: portrait) and (max-width: 899px) {
       .claim { max-width: 100%; }
       .aside-note { max-width: 100%; }
     }
 
+    /* Very short landscape */
     @media (orientation: landscape) and (max-height: 520px) {
       .slide {
         padding-top: calc(var(--pad-y) + 0.15rem);
         padding-bottom: calc(var(--pad-b) + 2rem);
-        gap: 0.35rem;
+        gap: 0.4rem;
       }
-      .deal { padding: 0.4rem 0.55rem; }
+      .thesis-pill { padding: 0.4rem 0.55rem; }
+      .deal, .info-card, .step, .takeaways .item, .count-card {
+        padding: 0.45rem 0.6rem;
+      }
+      .hero-kpi { padding: 0.45rem 0.55rem; }
       .meta { display: none; }
+      .deal .secondary { display: none; }
     }
 
+    /* Chrome */
     .chrome {
       position: absolute;
       left: 0;
@@ -512,11 +599,10 @@
 
     .dots {
       display: flex;
+      flex-wrap: nowrap;
       gap: 0.35rem;
       align-items: center;
       pointer-events: auto;
-      flex-wrap: wrap;
-      max-width: 70%;
     }
 
     .dots button {
@@ -528,6 +614,7 @@
       background: var(--dim);
       cursor: pointer;
       transition: background 160ms ease, transform 160ms ease;
+      flex-shrink: 0;
     }
 
     .dots button[aria-current="true"] {
@@ -548,8 +635,8 @@
       position: absolute;
       top: 0;
       bottom: 2.5rem;
-      width: 12%;
-      max-width: 5.5rem;
+      width: 18%;
+      max-width: 7rem;
       z-index: 4;
       background: transparent;
       border: 0;
@@ -576,65 +663,82 @@
   <div class="deck-root" id="deck">
     <div class="track" id="track">
 
-      <!-- 1 · Thesis / event -->
+      <!-- 01 · Title -->
       <section class="slide" data-label="thesis">
-        <div class="kicker"><span class="dot"></span> Amazon AU · Prime Big Deal Days 2026</div>
+        <div class="kicker"><span class="dot"></span> Amazon AU · Prime Big Deal Days · 29 Sep–5 Oct 2026</div>
         <div class="head">
-          <h1 class="claim">Prime Big Deal Days is <em>live</em> — 83 legit deals, fakes excluded.</h1>
-          <p class="subclaim">29 Sep–5 Oct 2026 (ends 11:59pm Mon 5 Oct AEDT). Snapshot 2026-09-29 ~21:51 AWST. Sale prices = live amazon.com.au buybox (AU zip 3000) · 86/86 ASINs OK.</p>
+          <h1 class="claim">Buy the <em>floor</em>, skip the fake markdown.</h1>
+          <p class="subclaim">84 verified includes. Five ATL callouts. Buybox refreshed ~21:51&nbsp;AWST — Camel/Keepa still manual.</p>
           <div class="thesis-bar">
-            <div class="thesis-pill"><strong>Window</strong>Live now → Mon 5 Oct AEDT</div>
-            <div class="thesis-pill"><strong>Included</strong>83 ATL / near-ATL / real discounts</div>
-            <div class="thesis-pill"><strong>Rule</strong>Re-check live amazon.com.au before buy</div>
+            <div class="thesis-pill"><strong>ATL first</strong>TechRadar all-time lows — safest “buy now”</div>
+            <div class="thesis-pill"><strong>Near next</strong>~within 5% of recent sale floors</div>
+            <div class="thesis-pill"><strong>Re-check /dp</strong>Stock and price move hourly</div>
+          </div>
+        </div>
+        <div class="hero-kpi" role="img" aria-label="Key counts: 84 included, 5 ATL, 9 near-ATL, 86 buybox OK">
+          <div class="kpi accent">
+            <div class="n">84</div>
+            <div class="lbl">Included</div>
+          </div>
+          <div class="kpi ok">
+            <div class="n">5</div>
+            <div class="lbl">ATL</div>
+          </div>
+          <div class="kpi">
+            <div class="n">9</div>
+            <div class="lbl">Near-ATL</div>
+          </div>
+          <div class="kpi">
+            <div class="n">86</div>
+            <div class="lbl">Buybox OK</div>
           </div>
         </div>
         <div class="meta">
-          <span>Hub · amazon.com.au/primebigdealdays</span>
+          <span>Snapshot 2026-09-29 · Melbourne zip 3000</span>
           <span>01 / thesis</span>
         </div>
       </section>
 
-      <!-- 2 · Method + caveats -->
-      <section class="slide" data-label="method">
-        <div class="kicker"><span class="dot"></span> How to read · caveats</div>
+      <!-- 02 · How to read -->
+      <section class="slide" data-label="tiers">
+        <div class="kicker"><span class="dot"></span> How to read</div>
         <div class="head">
-          <h2 class="claim">Four verdicts. Always re-check the live page.</h2>
+          <h2 class="claim">Four tiers. One rule: re-check live.</h2>
         </div>
-        <div class="takeaways">
-          <div class="item accent">
+        <div class="card-grid tiers">
+          <div class="info-card atl-tone">
             <strong>ATL</strong>
-            <span>All-time low per TechRadar explicit language + OZB history notes. Camel AU linked per ASIN.</span>
+            <span>Explicit all-time low language (TechRadar). Highest confidence “buy now.”</span>
           </div>
-          <div class="item accent">
-            <strong>near-ATL</strong>
-            <span>~Within 5% of known sale floor (July Prime / recent deeps).</span>
+          <div class="info-card near-tone">
+            <strong>Near-ATL</strong>
+            <span>~Within 5% of a recent sale floor. Worth a hard look.</span>
           </div>
-          <div class="item">
-            <strong>real-discount-not-ATL</strong>
-            <span>Meaningful sustained promo vs street — not proven record low.</span>
+          <div class="info-card">
+            <strong>Real discount</strong>
+            <span>Meaningful cut vs RRP/street — not claimed as the floor.</span>
           </div>
-          <div class="item">
-            <strong>insufficient-history</strong>
-            <span>Live buybox OK; Camel/Keepa history still browser/API-only — ATL not auto-proven.</span>
+          <div class="info-card warn-tone">
+            <strong>Insufficient history</strong>
+            <span>Price OK; Camel/Keepa blocked here — open history yourself.</span>
           </div>
         </div>
-        <div class="warn-box"><strong>Buybox verified:</strong> 86/86 ASINs refreshed 2026-09-29 ~21:51 AWST from amazon.com.au (AU delivery Melbourne 3000) via curl_cffi + amzpy/ha-amazon-price-tracker parsers. 71/84 match prior OZB/TR within AU$1. <strong>Still open Camel AU in a browser</strong> for ATL history — Camel Cloudflare + Keepa API key not available to automation. Prices move hourly — re-check /dp/ASIN before buy.</div>
         <div class="meta">
-          <span>Seller · confirm Amazon AU vs 3P on buybox</span>
-          <span>02 / method</span>
+          <span>Method detail lives in the research README</span>
+          <span>02 / tiers</span>
         </div>
       </section>
 
-      <!-- 3 · Counts -->
+      <!-- 03 · Counts -->
       <section class="slide" data-label="counts">
         <div class="kicker"><span class="dot"></span> Verified include set</div>
         <div class="head">
-          <h2 class="claim">83 deals after filtering weak misc &amp; fake markdown.</h2>
+          <h2 class="claim">Fakes filtered. Buybox <em>86 / 86</em>.</h2>
         </div>
         <div class="counts">
           <div class="count-card total">
-            <div class="n">83</div>
-            <div class="lbl">Included · fakes out</div>
+            <div class="n">84</div>
+            <div class="lbl">Included</div>
           </div>
           <div class="count-card atl">
             <div class="n">5</div>
@@ -642,475 +746,248 @@
           </div>
           <div class="count-card near">
             <div class="n">9</div>
-            <div class="lbl">near-ATL</div>
+            <div class="lbl">Near-ATL</div>
           </div>
-          <div class="count-card real">
-            <div class="n">39</div>
-            <div class="lbl">real-discount</div>
-          </div>
-          <div class="count-card hist">
-            <div class="n">30</div>
-            <div class="lbl">insufficient-history</div>
+          <div class="count-card">
+            <div class="n">37</div>
+            <div class="lbl">Real discount</div>
           </div>
         </div>
         <div class="meta">
-          <span>Buybox refresh · 2026-09-29 ~21:51 AWST · grok/prime-day-au</span>
+          <span>+33 insufficient-history · buybox ~21:51 AWST</span>
           <span>03 / counts</span>
         </div>
       </section>
 
-      <!-- 4 · ATL highlights -->
+      <!-- 04 · ATL -->
       <section class="slide" data-label="ATL">
         <div class="kicker"><span class="dot"></span> All-time lows · tap to open AU listing</div>
         <div class="head">
-          <h2 class="claim">Five <em>ATL</em> callouts — the safest “buy now” tier.</h2>
+          <h2 class="claim">Five <em>ATL</em> — safest buy-now tier.</h2>
         </div>
         <div class="deals">
           <a class="deal" href="https://www.amazon.com.au/dp/B0DJDSZJX6" target="_blank" rel="noopener">
             <span class="badge atl">ATL</span>
-            <span class="name">Blink Video Doorbell + Sync Module Core</span>
+            <span class="name">Blink Video Doorbell + Sync Module</span>
+            <span class="secondary">Matches July floor</span>
             <span class="price">$27.99</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0CK42LW4C" target="_blank" rel="noopener">
             <span class="badge atl">ATL</span>
             <span class="name">Samsung Galaxy SmartTag2 (4 Pack)</span>
+            <span class="secondary">Lowest seen · ~$17.25/unit</span>
             <span class="price">$69</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CZXW5XR3" target="_blank" rel="noopener">
+          <a class="deal highlight" href="https://www.amazon.com.au/dp/B0CZXW5XR3" target="_blank" rel="noopener">
             <span class="badge atl">ATL</span>
-            <span class="name">Ninja DoubleStack XXXL 9.5L Air Fryer</span>
-            <span class="price">$170.05<span class="was">beat July $189 · was $179 Day-1</span></span></span>
+            <span class="name">Ninja Double Stack XL Air Fryer</span>
+            <span class="secondary">Beat July $189</span>
+            <span class="price">$170.05</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B093W7RLYT" target="_blank" rel="noopener">
             <span class="badge atl">ATL</span>
-            <span class="name">Shark IZ102 Cordless Vacuum</span>
-            <span class="price">$189</span></span>
+            <span class="name">Shark Cordless Vacuum IZ102</span>
+            <span class="secondary">Was $399 list</span>
+            <span class="price">$189</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0GJTNZS4Z" target="_blank" rel="noopener">
             <span class="badge atl">ATL</span>
-            <span class="name">Philips Baristina Espresso Machine</span>
-            <span class="price">$359<span class="was">was $398 Day-1 ATL</span></span>
+            <span class="name">Philips Baristina Espresso</span>
+            <span class="secondary">Record low both colours</span>
+            <span class="price">$359</span>
           </a>
         </div>
         <div class="meta">
-          <span>TechRadar ATL language · live buybox 2026-09-29 ~21:51 AWST</span>
+          <span>TechRadar ATL language · live buybox</span>
           <span>04 / ATL</span>
         </div>
       </section>
 
-      <!-- 5 · Near-ATL highlights -->
+      <!-- 05 · Near-ATL -->
       <section class="slide" data-label="near-ATL">
         <div class="kicker"><span class="dot"></span> Near all-time lows · ~within 5%</div>
         <div class="head">
-          <h2 class="claim">Nine <em>near-ATL</em> — still worth a hard look.</h2>
+          <h2 class="claim">Eight <em>near-ATL</em> worth a hard look.</h2>
         </div>
-        <div class="deals cols-2">
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CK4J8S1G" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">SmartTag2 (1 Pack)</span>
-            <span class="price">$33</span>
-          </a>
+        <div class="deals">
           <a class="deal" href="https://www.amazon.com.au/dp/B00GGKMNTO" target="_blank" rel="noopener">
             <span class="badge near">near</span>
             <span class="name">Bosch 91-pc V-Line bits</span>
+            <span class="secondary">Common sale floor</span>
             <span class="price">$29.99</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0CJTHYL9D" target="_blank" rel="noopener">
             <span class="badge near">near</span>
-            <span class="name">Brother HL-L2445DW</span>
+            <span class="name">Brother HL-L2445DW Laser</span>
+            <span class="secondary">Was $199</span>
             <span class="price">$129.99</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0GJTHVD58" target="_blank" rel="noopener">
             <span class="badge near">near</span>
-            <span class="name">AirTag 4-pack (2nd gen)</span>
+            <span class="name">Apple AirTag 4-pack (2nd gen)</span>
+            <span class="secondary">Competitive vs retail</span>
             <span class="price">$149.95</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0DGJ8YC5N" target="_blank" rel="noopener">
             <span class="badge near">near</span>
-            <span class="name">AirPods 4 ANC</span>
+            <span class="name">AirPods 4 with ANC</span>
+            <span class="secondary">Near recent lows</span>
             <span class="price">$195</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0CXJBH48R" target="_blank" rel="noopener">
             <span class="badge near">near</span>
             <span class="name">Bose QuietComfort SC</span>
+            <span class="secondary">Was $499.95</span>
             <span class="price">$243</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0CQ2TBSPV" target="_blank" rel="noopener">
             <span class="badge near">near</span>
             <span class="name">Sennheiser Momentum 4</span>
+            <span class="secondary">Was $579.95</span>
             <span class="price">$259</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0D6V4K8L3" target="_blank" rel="noopener">
             <span class="badge near">near</span>
             <span class="name">Dreame X40 Ultra</span>
+            <span class="secondary">ATL territory / value</span>
             <span class="price">$712.49</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CVN8HWG7" target="_blank" rel="noopener">
+          <a class="deal highlight" href="https://www.amazon.com.au/dp/B0CVN8HWG7" target="_blank" rel="noopener">
             <span class="badge near">near</span>
-            <span class="name">Alienware AW2725DF OLED</span>
+            <span class="name">Alienware AW2725DF 27″ QD-OLED</span>
+            <span class="secondary">Lowest Amazon price seen</span>
             <span class="price">$886.26</span>
           </a>
         </div>
         <div class="meta">
-          <span>9 near-ATL in include set</span>
+          <span>SmartTag2 1-pack omitted · 4-pack is ATL</span>
           <span>05 / near-ATL</span>
         </div>
       </section>
 
-      <!-- 6 · Category · Devices + Home/Kitchen -->
-      <section class="slide" data-label="devices · kitchen">
-        <div class="kicker"><span class="dot"></span> Category picks · Devices &amp; Kitchen</div>
+      <!-- 06 · Best real discounts -->
+      <section class="slide" data-label="real discounts">
+        <div class="kicker"><span class="dot"></span> Best real discounts · not ATL / not near</div>
         <div class="head">
-          <h2 class="claim">Devices + kitchen — top real discounts beyond the ATLs.</h2>
+          <h2 class="claim">Deep cuts — treat RRPs with care.</h2>
         </div>
-        <div class="deals cols-2">
-          <a class="deal" href="https://www.amazon.com.au/dp/B0DJDSZJX6" target="_blank" rel="noopener">
-            <span class="badge atl">ATL</span>
-            <span class="name">Blink Doorbell System</span>
-            <span class="price">$27.99</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CW4F344C" target="_blank" rel="noopener">
+        <div class="deals">
+          <a class="deal" href="https://www.amazon.com.au/dp/B0GJ5KW37C" target="_blank" rel="noopener">
             <span class="badge real">real</span>
-            <span class="name">Fire TV Stick 4K Max</span>
-            <span class="price">$59.85</span>
+            <span class="name">ECOVACS DEEBOT T80 Omni</span>
+            <span class="secondary">Was $2,299</span>
+            <span class="price">$649</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B07NQ7HNHY" target="_blank" rel="noopener">
+          <a class="deal" href="https://www.amazon.com.au/dp/B0DSPVTBYH" target="_blank" rel="noopener">
             <span class="badge real">real</span>
-            <span class="name">Echo Studio</span>
-            <span class="price">$175</span>
+            <span class="name">ECOVACS DEEBOT T50 Omni</span>
+            <span class="secondary">Was $1,499</span>
+            <span class="price">$499</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CZXW5XR3" target="_blank" rel="noopener">
-            <span class="badge atl">ATL</span>
-            <span class="name">Ninja DoubleStack XXXL</span>
-            <span class="price">$170.05</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0D22DXB1Y" target="_blank" rel="noopener">
+          <a class="deal" href="https://www.amazon.com.au/dp/B0FXKLY3WN" target="_blank" rel="noopener">
             <span class="badge real">real</span>
-            <span class="name">Ninja Detect Blender Pro</span>
-            <span class="price">$166.25</span></span>
+            <span class="name">Puma Men’s Velocity Nitro 5</span>
+            <span class="secondary">Was $200</span>
+            <span class="price">$79.99</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0B4HCWQ59" target="_blank" rel="noopener">
+          <a class="deal" href="https://www.amazon.com.au/dp/B0CLCCVCDQ" target="_blank" rel="noopener">
             <span class="badge real">real</span>
-            <span class="name">Ninja Foodi Smart XL Grill</span>
-            <span class="price">$189.05</span></span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0GJTNZS4Z" target="_blank" rel="noopener">
-            <span class="badge atl">ATL</span>
-            <span class="name">Philips Baristina</span>
-            <span class="price">$359</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B093W7RLYT" target="_blank" rel="noopener">
-            <span class="badge atl">ATL</span>
-            <span class="name">Shark IZ102 Vacuum</span>
-            <span class="price">$189</span>
-          </a>
-        </div>
-        <div class="meta">
-          <span>Amazon Devices · Kitchen · Floorcare</span>
-          <span>06 / devices · kitchen</span>
-        </div>
-      </section>
-
-      <!-- 7 · Category · Tech / Audio -->
-      <section class="slide" data-label="tech · audio">
-        <div class="kicker"><span class="dot"></span> Category picks · Tech &amp; Audio</div>
-        <div class="head">
-          <h2 class="claim">Audio floors + monitors + trackers.</h2>
-        </div>
-        <div class="deals cols-2">
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CK42LW4C" target="_blank" rel="noopener">
-            <span class="badge atl">ATL</span>
-            <span class="name">SmartTag2 4-pack</span>
-            <span class="price">$69</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0DGJ8YC5N" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">AirPods 4 ANC</span>
-            <span class="price">$195</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CXJBH48R" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Bose QC SC</span>
-            <span class="price">$243</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CQ2TBSPV" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Sennheiser Momentum 4</span>
-            <span class="price">$259</span>
+            <span class="name">Philips Air Purifier 1000i</span>
+            <span class="secondary">Was $349</span>
+            <span class="price">$141.50</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0GNM34JR6" target="_blank" rel="noopener">
             <span class="badge real">real</span>
             <span class="name">Harman Kardon Luna 2</span>
-            <span class="price">$94.05</span></span>
+            <span class="secondary">Was $229.95</span>
+            <span class="price">$94.05</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CVN8HWG7" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Alienware AW2725DF</span>
-            <span class="price">$886.26</span>
+          <a class="deal" href="https://www.amazon.com.au/dp/B0D22DXB1Y" target="_blank" rel="noopener">
+            <span class="badge real">real</span>
+            <span class="name">Ninja Detect Blender Pro</span>
+            <span class="secondary">Was $369</span>
+            <span class="price">$166.25</span>
           </a>
           <a class="deal" href="https://www.amazon.com.au/dp/B0F8NSBK82" target="_blank" rel="noopener">
             <span class="badge real">real</span>
-            <span class="name">Dell S3225QC QD-OLED</span>
-            <span class="price">$811.7</span></span>
+            <span class="name">Dell S3225QC 32″ QD-OLED</span>
+            <span class="secondary">Was $1,499</span>
+            <span class="price">$811.70</span>
           </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0982R2MCJ" target="_blank" rel="noopener">
+          <a class="deal highlight" href="https://www.amazon.com.au/dp/B0982R2MCJ" target="_blank" rel="noopener">
             <span class="badge real">real</span>
-            <span class="name">Nikon Z fc + 16-50 kit</span>
-            <span class="price">$1149</span></span>
+            <span class="name">Nikon Z fc + 16-50mm kit</span>
+            <span class="secondary">Was $2,049</span>
+            <span class="price">$1,149</span>
           </a>
         </div>
         <div class="meta">
-          <span>Tech — Audio · Electronics &amp; Computing</span>
-          <span>07 / tech · audio</span>
+          <span>No overlap with ATL / near slides</span>
+          <span>06 / real discounts</span>
         </div>
       </section>
 
-      <!-- 8 · Category · Home robots + Essentials -->
-      <section class="slide" data-label="home · essentials">
-        <div class="kicker"><span class="dot"></span> Category picks · Robots &amp; Essentials</div>
-        <div class="head">
-          <h2 class="claim">Robot vacs are deep promos — treat RRPs with care. Essentials are quieter wins.</h2>
-        </div>
-        <div class="deals cols-2">
-          <a class="deal" href="https://www.amazon.com.au/dp/B0D6V4K8L3" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Dreame X40 Ultra</span>
-            <span class="price">$712.49</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0GZVV4D94" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Roborock Q7T+</span>
-            <span class="price">$279</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0DSPVTBYH" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Ecovacs Deebot T50 Omni</span>
-            <span class="price">$499</span></span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B00GGKMNTO" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Bosch 91-pc V-Line</span>
-            <span class="price">$29.99</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B085TPRFLX" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Vitasoy Unsweetened Oat 12pk</span>
-            <span class="price">$17.86</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B07KY731CC" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Quilton 3-ply 20-pack</span>
-            <span class="price">$19.99</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0FXKLY3WN" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">Puma Velocity Nitro 5</span>
-            <span class="price">$79.99</span></span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0DHYNRP1M" target="_blank" rel="noopener">
-            <span class="badge real">real</span>
-            <span class="name">LEGO Jabba’s Sail Barge</span>
-            <span class="price">$597.54</span>
-          </a>
-        </div>
-        <div class="meta">
-          <span>Robot vacs · Essentials · Sport · Toys</span>
-          <span>08 / home · essentials</span>
-        </div>
-      </section>
-
-      <!-- 9 · Fakes / exclusions -->
-      <section class="slide" data-label="fakes out">
-        <div class="kicker"><span class="dot"></span> Exclusions · fake markdown patterns</div>
-        <div class="head">
-          <h2 class="claim">What we <em>left out</em> — and why.</h2>
-        </div>
-        <div class="takeaways">
-          <div class="item">
-            <strong>Soft-drink multipacks + inflated RRP</strong>
-            <span>Pepsi/Monster-style 24-packs with ~50% off a temporary RRP that never clears on Camel. Classic fake markdown (OZB node 976056).</span>
-          </div>
-          <div class="item">
-            <strong>Robot-vac “was $2,000+” without street history</strong>
-            <span>Aspirational list prices (e.g. Ecovacs X8 $2599→$699). Deep promos can still be real — we refuse ATL labels without Camel.</span>
-          </div>
-          <div class="item">
-            <strong>Accessory / search noise ASINs</strong>
-            <span>Filters, NFC cards, wall mounts mis-hit by brand search — dropped.</span>
-          </div>
-          <div class="item">
-            <strong>Promo credits / Zip / cashback-only</strong>
-            <span>Not product deals — excluded from the 83.</span>
-          </div>
-        </div>
-        <div class="meta">
-          <span>Treat grocery multipack “RRP” with suspicion</span>
-          <span>09 / fakes out</span>
-        </div>
-      </section>
-
-      <!-- 10 · How to re-check -->
-      <section class="slide" data-label="re-check">
+      <!-- 07 · Caveat -->
+      <section class="slide" data-label="caveat">
         <div class="kicker"><span class="dot"></span> Before you buy</div>
         <div class="head">
-          <h2 class="claim">Buybox is verified here — still open Camel AU in a browser for history.</h2>
+          <h2 class="claim">Buybox verified. History is still on you.</h2>
         </div>
         <div class="steps">
           <div class="step">
-            <span class="num">1</span>
             <div>
-              <strong>Open amazon.com.au/dp/ASIN</strong>
-              <span>Deck prices are live buybox snapshots — confirm stock/seller (Amazon AU vs 3P) still match. Prices move hourly.</span>
+              <strong>Buybox checked</strong>
+              <span>86/86 ASINs live on amazon.com.au ~21:51&nbsp;AWST (zip 3000).</span>
             </div>
           </div>
           <div class="step">
-            <span class="num">2</span>
             <div>
-              <strong>Open au.camelcamelcamel.com/product/ASIN</strong>
-              <span>Camel charts still Cloudflare-blocked to automation — works in a normal browser. Confirm ATL vs “near”.</span>
+              <strong>Camel / Keepa manual</strong>
+              <span>Automation hit Cloudflare / no API key — open charts in a browser.</span>
             </div>
           </div>
           <div class="step">
-            <span class="num">3</span>
             <div>
-              <strong>Ignore aspirational RRPs on robots / grocery</strong>
-              <span>Street history &gt; list price. If Camel never cleared the “was”, treat as fake markdown.</span>
+              <strong>Re-check /dp</strong>
+              <span>Prices and stock move hourly. Tap the card, confirm before checkout.</span>
             </div>
           </div>
           <div class="step">
-            <span class="num">4</span>
             <div>
-              <strong>Watch mid-week flash refreshes</strong>
-              <span>Inventory turns over — ATL set can expand after Day 1.</span>
+              <strong>Skip fake RRP</strong>
+              <span>Grocery multipacks with inflated “was” stayed out of the include set.</span>
             </div>
           </div>
         </div>
         <div class="meta">
-          <span>Keepa AU needs API for structured history</span>
-          <span>10 / re-check</span>
+          <span>Event ends 11:59pm Mon 5 Oct AEDT</span>
+          <span>07 / caveat</span>
         </div>
       </section>
 
-      <!-- 11 · Sources -->
-      <section class="slide" data-label="sources">
-        <div class="kicker"><span class="dot"></span> Sources · buybox refresh 2026-09-29 ~21:51 AWST</div>
+      <!-- 08 · Summary -->
+      <section class="slide" data-label="close">
+        <div class="kicker"><span class="dot"></span> Takeaways</div>
         <div class="head">
-          <h2 class="claim">Where the 83 came from.</h2>
-          <p class="subclaim">Research branch <code>grok/prime-day-au</code> @ <code>ad317d09</code> · private docs DEALS.md + FINDINGS.md.</p>
+          <h2 class="claim">Floor first. Then deep real cuts.</h2>
         </div>
-        <div class="sources">
-          <a class="row" href="https://www.amazon.com.au/primebigdealdays/" target="_blank" rel="noopener">
-            <strong>Amazon AU · Prime Big Deal Days hub</strong>
-            <span>Official</span>
-          </a>
-          <a class="row" href="https://www.aboutamazon.com.au/news/retail/amazon-australias-prime-big-deal-days-is-live-now" target="_blank" rel="noopener">
-            <strong>About Amazon AU · event announcement</strong>
-            <span>PR</span>
-          </a>
-          <a class="row" href="https://www.ozbargain.com.au/" target="_blank" rel="noopener">
-            <strong>OzBargain PBDD posts</strong>
-            <span>Live prices</span>
-          </a>
-          <a class="row" href="https://www.techradar.com/" target="_blank" rel="noopener">
-            <strong>TechRadar day-1 live hub</strong>
-            <span>ATL calls</span>
-          </a>
-          <a class="row" href="https://au.camelcamelcamel.com/" target="_blank" rel="noopener">
-            <strong>CamelCamelCamel AU</strong>
-            <span>History</span>
-          </a>
-          <a class="row" href="https://github.com/theonlyanil/amzpy" target="_blank" rel="noopener">
-            <strong>amzpy + ha-amazon-price-tracker</strong>
-            <span>Buybox tool</span>
-          </a>
+        <div class="takeaways">
+          <div class="item accent">
+            <strong>Start with the 5 ATLs</strong>
+            <span>Blink, SmartTag2 4-pack, Ninja fryer, Shark vac, Baristina — safest buys.</span>
+          </div>
+          <div class="item">
+            <strong>Near-ATL for audio / OLED</strong>
+            <span>Bose, Momentum 4, AirPods 4 ANC, Alienware QD-OLED are close to floors.</span>
+          </div>
+          <div class="item">
+            <strong>Open Camel yourself</strong>
+            <span>Buybox is live; history isn’t automated. Confirm /dp before you pay.</span>
+          </div>
         </div>
         <div class="meta">
-          <span>Ends 11:59pm Mon 5 Oct 2026 AEDT</span>
-          <span>11 / sources</span>
-        </div>
-      </section>
-
-      <!-- 12 · Compact ATL + near-ATL list -->
-      <section class="slide" data-label="full ATL list">
-        <div class="kicker"><span class="dot"></span> Compact list · all ATL + near-ATL</div>
-        <div class="head">
-          <h2 class="claim">14 deals at or near the floor.</h2>
-        </div>
-        <div class="deals cols-2">
-          <a class="deal" href="https://www.amazon.com.au/dp/B0DJDSZJX6" target="_blank" rel="noopener">
-            <span class="badge atl">ATL</span>
-            <span class="name">Blink Doorbell System</span>
-            <span class="price">$27.99</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CK4J8S1G" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">SmartTag2 1pk</span>
-            <span class="price">$33</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B00GGKMNTO" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Bosch 91-pc bits</span>
-            <span class="price">$29.99</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CK42LW4C" target="_blank" rel="noopener">
-            <span class="badge atl">ATL</span>
-            <span class="name">SmartTag2 4pk</span>
-            <span class="price">$69</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CJTHYL9D" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Brother HL-L2445DW</span>
-            <span class="price">$129.99</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0GJTHVD58" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">AirTag 4pk 2nd gen</span>
-            <span class="price">$149.95</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CZXW5XR3" target="_blank" rel="noopener">
-            <span class="badge atl">ATL</span>
-            <span class="name">Ninja DoubleStack XXXL</span>
-            <span class="price">$170.05</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B093W7RLYT" target="_blank" rel="noopener">
-            <span class="badge atl">ATL</span>
-            <span class="name">Shark IZ102</span>
-            <span class="price">$189</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0DGJ8YC5N" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">AirPods 4 ANC</span>
-            <span class="price">$195</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CXJBH48R" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Bose QC SC</span>
-            <span class="price">$243</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CQ2TBSPV" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Sennheiser Momentum 4</span>
-            <span class="price">$259</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0GJTNZS4Z" target="_blank" rel="noopener">
-            <span class="badge atl">ATL</span>
-            <span class="name">Philips Baristina</span>
-            <span class="price">$359</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0D6V4K8L3" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Dreame X40 Ultra</span>
-            <span class="price">$712.49</span>
-          </a>
-          <a class="deal" href="https://www.amazon.com.au/dp/B0CVN8HWG7" target="_blank" rel="noopener">
-            <span class="badge near">near</span>
-            <span class="name">Alienware AW2725DF</span>
-            <span class="price">$886.26</span>
-          </a>
-        </div>
-        <div class="meta">
-          <span>5 ATL · 9 near-ATL · tap any card</span>
-          <span>12 / full ATL list</span>
+          <span>Live deck · prime-day-au-deck</span>
+          <span>08 / close</span>
         </div>
       </section>
 
@@ -1193,7 +1070,6 @@
       const root = document.getElementById('deck');
       root.addEventListener('touchstart', function (e) {
         if (e.touches.length !== 1) return;
-        if (e.target.closest('a, .deals, .sources')) return;
         touching = true;
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
