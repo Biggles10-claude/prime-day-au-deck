@@ -500,16 +500,9 @@
         tabsEl.innerHTML = roundList
           .map(function (r) {
             const sel = r.id === activeRound ? "true" : "false";
-            // Round tabs: count = new-to-that-run; All: de-duped union
-            const n =
-              r.id === "all"
-                ? r.include_count
-                : typeof r.new_includes === "number"
-                ? r.new_includes
-                : r.include_count;
             const count =
-              typeof n === "number"
-                ? '<span class="tab-count">' + n + "</span>"
+              typeof r.include_count === "number"
+                ? '<span class="tab-count">' + r.include_count + "</span>"
                 : "";
             return (
               '<button type="button" role="tab" data-round="' +
@@ -545,24 +538,14 @@
           (meta.postcode || "3000");
 
         const kpis = document.getElementById("kpis");
-        const isAllTab = activeRound === "all";
-        const kpiBits = isAllTab
-          ? [
-              ["Includes (all runs)", meta.include_count, true],
-              ["New vs prior", meta.new_includes, true],
-              ["Candidates", meta.candidates, false],
-              ["Buybox OK", meta.buybox_ok, false],
-              ["OOS", meta.oos_count, false],
-              ["Excludes", meta.exclude_count, false],
-            ]
-          : [
-              ["Added this run", meta.include_count || meta.new_includes, true],
-              ["Snapshot includes", meta.snapshot_include_count, false],
-              ["Candidates", meta.candidates, false],
-              ["Buybox OK", meta.buybox_ok, false],
-              ["OOS", meta.oos_count, false],
-              ["Excludes", meta.exclude_count, false],
-            ];
+        const kpiBits = [
+          ["Includes", meta.include_count, true],
+          ["New this round", meta.new_includes, true],
+          ["Candidates", meta.candidates, false],
+          ["Buybox OK", meta.buybox_ok, false],
+          ["OOS", meta.oos_count, false],
+          ["Excludes", meta.exclude_count, false],
+        ];
         kpis.innerHTML = kpiBits
           .map(function (row) {
             if (row[1] == null) return "";
@@ -820,7 +803,6 @@
           " (of " +
           items.length +
           " in this tab)";
-        const isAll = activeRound === "all";
         filterHint.textContent =
           status === "include" &&
           newMode === "all" &&
@@ -828,17 +810,13 @@
           catSel.value === "all" &&
           !maxPriceEl.value &&
           !(searchEl.value || "").trim()
-            ? isAll
-              ? "All runs: de-duped union of every round’s includes (" +
-                (meta.include_count || 0) +
-                "). Round tabs show only deals first included that run."
-              : "This Round tab: only deals first included this run (" +
-                (meta.include_count || meta.new_includes || 0) +
-                "). Snapshot classify had " +
-                (meta.snapshot_include_count || "—") +
-                " includes — open All for the full union."
+            ? "Default: Include only (" +
+              (meta.include_count || 0) +
+              ") · " +
+              (meta.new_includes || 0) +
+              " new vs prior run — tap New only"
             : newMode === "new"
-            ? "New only: includes added vs prior run (" +
+            ? "New only: includes added this round vs prior board (" +
               (meta.new_includes || 0) +
               ")"
             : "Filters active";
