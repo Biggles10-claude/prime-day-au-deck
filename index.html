@@ -38,7 +38,7 @@
       backdrop-filter: blur(10px);
       background: rgba(247, 246, 243, 0.94);
       border-bottom: 1px solid var(--line);
-      padding: 0.7rem 1.1rem;
+      padding: 0.7rem 1.1rem 0.55rem;
     }
     .bar-inner {
       max-width: 72rem;
@@ -80,6 +80,43 @@
       color: var(--accent);
     }
     .kpi.accent strong { color: var(--accent); }
+    .tabs-wrap {
+      max-width: 72rem;
+      margin: 0.55rem auto 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0.35rem;
+      padding-bottom: 0.15rem;
+      min-width: min-content;
+    }
+    .tabs button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 0.45rem 0.9rem;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      min-height: 44px;
+      white-space: nowrap;
+    }
+    .tabs button[aria-selected="true"] {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+    .tabs button .tab-count {
+      opacity: 0.75;
+      font-weight: 400;
+      margin-left: 0.25rem;
+    }
     main {
       max-width: 72rem;
       margin: 0 auto;
@@ -129,6 +166,11 @@
       background: var(--ink);
       color: #fff;
       border-color: var(--ink);
+    }
+    .seg button.new-chip[aria-pressed="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
     }
     .controls {
       display: grid;
@@ -189,6 +231,10 @@
       gap: 0.4rem;
       min-width: 0;
     }
+    .card.is-new {
+      border-color: rgba(196, 92, 38, 0.35);
+      box-shadow: 0 0 0 1px rgba(196, 92, 38, 0.08);
+    }
     .card .top {
       display: flex;
       flex-wrap: wrap;
@@ -224,8 +270,12 @@
       border-color: rgba(170, 51, 51, 0.3);
       background: rgba(170, 51, 51, 0.08);
     }
-    .badge.excl {
-      color: var(--muted);
+    .badge.excl { color: var(--muted); }
+    .badge.new {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+      font-weight: 600;
     }
     .card .title {
       font-weight: 600;
@@ -321,6 +371,9 @@
       </div>
       <div class="kpis" id="kpis" aria-label="Snapshot KPIs"></div>
     </div>
+    <div class="tabs-wrap">
+      <div class="tabs" role="tablist" aria-label="Prime run" id="round-tabs"></div>
+    </div>
   </header>
 
   <main>
@@ -332,6 +385,13 @@
           <button type="button" data-status="exclude" aria-pressed="false">Exclude</button>
           <button type="button" data-status="oos" aria-pressed="false">OOS</button>
           <button type="button" data-status="all" aria-pressed="false">All</button>
+        </div>
+      </div>
+      <div class="filter-row">
+        <label class="lbl">Added</label>
+        <div class="seg" role="group" aria-label="New includes filter" id="new-seg">
+          <button type="button" data-new="all" aria-pressed="true">All deals</button>
+          <button type="button" class="new-chip" data-new="new" aria-pressed="false" id="new-only-btn">New only</button>
         </div>
       </div>
       <div class="filter-row">
@@ -362,7 +422,7 @@
 
     <div class="count-bar">
       <div><strong id="visible-count">0</strong> <span class="hint" id="count-label">deals shown</span></div>
-      <div class="hint" id="filter-hint">Default: Include only</div>
+      <div class="hint" id="filter-hint">Default: Include only · use New only for this round’s additions</div>
     </div>
 
     <section class="grid" id="grid" aria-live="polite" aria-busy="true"></section>
@@ -377,95 +437,193 @@
   <script src="assets/data.js"></script>
   <script>
     (function () {
-      const data = window.PRIME_DEALS;
-      if (!data || !Array.isArray(data.items)) {
+      const root = window.PRIME_DEALS;
+      if (!root || (!Array.isArray(root.items) && !root.rounds)) {
         document.getElementById("grid").innerHTML =
           '<div class="empty">Failed to load deal data.</div>';
         return;
       }
 
-      const meta = data.meta;
-      const items = data.items;
+      const roundsMap = root.rounds || {};
+      const roundList =
+        (root.meta && root.meta.rounds) ||
+        Object.keys(roundsMap).map(function (id) {
+          const m = (roundsMap[id] && roundsMap[id].meta) || {};
+          return {
+            id: id,
+            label: m.label || id,
+            include_count: m.include_count,
+            new_includes: m.new_includes,
+            snapshot_awst: m.snapshot_awst,
+          };
+        });
 
-      document.getElementById("event-title").textContent = meta.event;
-      const snap = meta.snapshot_awst || "";
-      const snapLabel = snap.replace("T", " ").replace("+08:00", " AWST");
-      document.getElementById("event-meta").textContent =
-        (meta.window || "") +
-        " · snapshot " + snapLabel +
-        " · buybox zip " + (meta.postcode || "3000");
+      let activeRound =
+        (root.meta && root.meta.default_round) ||
+        (roundList.length ? roundList[roundList.length - 1].id : null);
+      if (activeRound === "all" && roundList.length > 1) {
+        // prefer last concrete round as default if listed
+        const concrete = roundList.filter(function (r) { return r.id !== "all"; });
+        if (concrete.length) activeRound = concrete[concrete.length - 1].id;
+      }
 
-      const kpis = document.getElementById("kpis");
-      const kpiBits = [
-        ["Includes", meta.include_count, true],
-        ["Candidates", meta.candidates, false],
-        ["Buybox OK", meta.buybox_ok, false],
-        ["OOS", meta.oos_count, false],
-        ["Excludes", meta.exclude_count, false],
-        ["+new vs prior", meta.new_includes, false],
-      ];
-      kpis.innerHTML = kpiBits
-        .map(function (row) {
-          return (
-            '<span class="kpi' +
-            (row[2] ? " accent" : "") +
-            '"><strong>' +
-            row[1] +
-            "</strong> " +
-            row[0] +
-            "</span>"
-          );
-        })
-        .join("");
+      let meta = root.meta || {};
+      let items = root.items || [];
 
-      const cats = Array.from(
-        new Set(items.map(function (i) { return i.category || "Other"; }))
-      ).sort(function (a, b) {
-        if (a === "Other") return 1;
-        if (b === "Other") return -1;
-        return a.localeCompare(b);
-      });
-      const catSel = document.getElementById("category");
-      catSel.innerHTML =
-        '<option value="all">All categories</option>' +
-        cats
-          .map(function (c) {
-            return '<option value="' + escapeAttr(c) + '">' + escapeHtml(c) + "</option>";
+      function loadRound(id) {
+        activeRound = id;
+        if (roundsMap[id]) {
+          meta = roundsMap[id].meta || meta;
+          items = roundsMap[id].items || [];
+        } else if (id === (root.meta && root.meta.default_round)) {
+          meta = root.meta;
+          items = root.items || [];
+        }
+        paintChrome();
+        rebuildCategories();
+        render();
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+      function escapeAttr(s) {
+        return escapeHtml(s).replace(/'/g, "&#39;");
+      }
+
+      const tabsEl = document.getElementById("round-tabs");
+      function paintTabs() {
+        tabsEl.innerHTML = roundList
+          .map(function (r) {
+            const sel = r.id === activeRound ? "true" : "false";
+            const count =
+              typeof r.include_count === "number"
+                ? '<span class="tab-count">' + r.include_count + "</span>"
+                : "";
+            return (
+              '<button type="button" role="tab" data-round="' +
+              escapeAttr(r.id) +
+              '" aria-selected="' +
+              sel +
+              '">' +
+              escapeHtml(r.label || r.id) +
+              count +
+              "</button>"
+            );
+          })
+          .join("");
+        tabsEl.querySelectorAll("button").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            loadRound(btn.getAttribute("data-round"));
+          });
+        });
+      }
+
+      function paintChrome() {
+        document.getElementById("event-title").textContent =
+          meta.event || "Amazon AU Prime Big Deal Days 2026";
+        const snap = meta.snapshot_awst || "";
+        const snapLabel = snap.replace("T", " ").replace("+08:00", " AWST");
+        document.getElementById("event-meta").textContent =
+          (meta.window || "") +
+          " · " +
+          (meta.label || activeRound || "") +
+          " · snapshot " +
+          snapLabel +
+          " · buybox zip " +
+          (meta.postcode || "3000");
+
+        const kpis = document.getElementById("kpis");
+        const kpiBits = [
+          ["Includes", meta.include_count, true],
+          ["New this round", meta.new_includes, true],
+          ["Candidates", meta.candidates, false],
+          ["Buybox OK", meta.buybox_ok, false],
+          ["OOS", meta.oos_count, false],
+          ["Excludes", meta.exclude_count, false],
+        ];
+        kpis.innerHTML = kpiBits
+          .map(function (row) {
+            if (row[1] == null) return "";
+            return (
+              '<span class="kpi' +
+              (row[2] ? " accent" : "") +
+              '"><strong>' +
+              row[1] +
+              "</strong> " +
+              row[0] +
+              "</span>"
+            );
           })
           .join("");
 
-      const caveats = document.getElementById("caveats");
-      (meta.caveats || []).forEach(function (c) {
-        const li = document.createElement("li");
-        li.textContent = c;
-        caveats.appendChild(li);
-      });
-      const v = meta.verdicts || {};
-      document.getElementById("footer-meta").innerHTML =
-        "Include verdicts: ATL " +
-        (v.ATL || 0) +
-        " · near-ATL " +
-        (v["near-ATL"] || 0) +
-        " · real-discount " +
-        (v["real-discount"] || 0) +
-        " · insufficient-history " +
-        (v["insufficient-history"] || 0) +
-        ". Fail (no buyable parse): " +
-        (meta.fail_count || 0) +
-        ". Prior includes retained: " +
-        (meta.prior146 || 0) +
-        " (dropped " +
-        (meta.dropped_vs_prior || 0) +
-        "). Data from local scan JSON only — not live-scraped on this page. " +
-        (meta.buybox_tool
-          ? "Buybox tool: " + escapeHtml(meta.buybox_tool) + "."
-          : "");
+        const caveats = document.getElementById("caveats");
+        caveats.innerHTML = "";
+        (meta.caveats || []).forEach(function (c) {
+          const li = document.createElement("li");
+          li.textContent = c;
+          caveats.appendChild(li);
+        });
+        const v = meta.verdicts || {};
+        document.getElementById("footer-meta").innerHTML =
+          "Include verdicts: ATL " +
+          (v.ATL || 0) +
+          " · near-ATL " +
+          (v["near-ATL"] || 0) +
+          " · real-discount " +
+          (v["real-discount"] || 0) +
+          " · insufficient-history " +
+          (v["insufficient-history"] || 0) +
+          ". New includes vs prior run: " +
+          (meta.new_includes || 0) +
+          ". Fail (no buyable parse): " +
+          (meta.fail_count || 0) +
+          ". Data from local scan JSON — not live-scraped in-browser. " +
+          (meta.buybox_tool
+            ? "Buybox tool: " + escapeHtml(meta.buybox_tool) + "."
+            : "");
+        paintTabs();
+      }
+
+      const catSel = document.getElementById("category");
+      function rebuildCategories() {
+        const cats = Array.from(
+          new Set(items.map(function (i) { return i.category || "Other"; }))
+        ).sort(function (a, b) {
+          if (a === "Other") return 1;
+          if (b === "Other") return -1;
+          return a.localeCompare(b);
+        });
+        const prev = catSel.value || "all";
+        catSel.innerHTML =
+          '<option value="all">All categories</option>' +
+          cats
+            .map(function (c) {
+              return (
+                '<option value="' +
+                escapeAttr(c) +
+                '">' +
+                escapeHtml(c) +
+                "</option>"
+              );
+            })
+            .join("");
+        if ([].some.call(catSel.options, function (o) { return o.value === prev; })) {
+          catSel.value = prev;
+        }
+      }
 
       let status = "include";
       let verdict = "all";
+      let newMode = "all";
 
       const statusBtns = document.querySelectorAll("#status-seg button");
       const verdictBtns = document.querySelectorAll("#verdict-seg button");
+      const newBtns = document.querySelectorAll("#new-seg button");
       const maxPriceEl = document.getElementById("max-price");
       const searchEl = document.getElementById("search");
       const grid = document.getElementById("grid");
@@ -491,6 +649,15 @@
           render();
         });
       });
+      newBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          newMode = btn.getAttribute("data-new");
+          newBtns.forEach(function (b) {
+            b.setAttribute("aria-pressed", String(b === btn));
+          });
+          render();
+        });
+      });
       catSel.addEventListener("change", render);
       maxPriceEl.addEventListener("input", render);
       searchEl.addEventListener("input", render);
@@ -506,23 +673,13 @@
         );
       }
 
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;");
-      }
-      function escapeAttr(s) {
-        return escapeHtml(s).replace(/'/g, "&#39;");
-      }
-
       function verdictBadge(v, st) {
         if (st === "oos") return '<span class="badge oos">OOS</span>';
         if (st === "exclude") return '<span class="badge excl">Exclude</span>';
         if (v === "ATL") return '<span class="badge atl">ATL</span>';
         if (v === "near-ATL") return '<span class="badge near">Near-ATL</span>';
-        if (v === "real-discount") return '<span class="badge real">Real discount</span>';
+        if (v === "real-discount")
+          return '<span class="badge real">Real discount</span>';
         if (v === "insufficient-history")
           return '<span class="badge">Insufficient history</span>';
         if (v) return '<span class="badge">' + escapeHtml(v) + "</span>";
@@ -531,6 +688,7 @@
 
       function matches(item) {
         if (status !== "all" && item.status !== status) return false;
+        if (newMode === "new" && !item.is_new) return false;
         if (verdict !== "all" && item.verdict !== verdict) return false;
         const cat = catSel.value;
         if (cat !== "all" && (item.category || "Other") !== cat) return false;
@@ -556,7 +714,12 @@
 
       function cardHtml(item) {
         const badge = verdictBadge(item.verdict, item.status);
-        const cat = item.category ? '<span class="badge">' + escapeHtml(item.category) + "</span>" : "";
+        const newBadge = item.is_new
+          ? '<span class="badge new">New</span>'
+          : "";
+        const cat = item.category
+          ? '<span class="badge">' + escapeHtml(item.category) + "</span>"
+          : "";
         const rrp =
           typeof item.rrp === "number" &&
           typeof item.sale === "number" &&
@@ -573,15 +736,28 @@
         const asin = item.asin
           ? '<div class="meta-line">' + escapeHtml(item.asin) + "</div>"
           : "";
+        const seen = item.first_seen_awst
+          ? '<div class="meta-line">First seen ' +
+            escapeHtml(
+              String(item.first_seen_awst)
+                .replace("T", " ")
+                .replace("+08:00", " AWST")
+            ) +
+            "</div>"
+          : "";
         const camel = item.camel
           ? '<a href="' +
             escapeAttr(item.camel) +
             '" target="_blank" rel="noopener noreferrer">Camel</a>'
           : "";
-        const url = item.url || ("https://www.amazon.com.au/dp/" + (item.asin || ""));
+        const url =
+          item.url || "https://www.amazon.com.au/dp/" + (item.asin || "");
         return (
-          '<article class="card">' +
+          '<article class="card' +
+          (item.is_new ? " is-new" : "") +
+          '">' +
           '<div class="top">' +
+          newBadge +
           badge +
           cat +
           "</div>" +
@@ -597,6 +773,7 @@
           "</div>" +
           seller +
           asin +
+          seen +
           '<div class="links">' +
           '<a href="' +
           escapeAttr(url) +
@@ -618,21 +795,36 @@
             : status === "exclude"
             ? "excludes"
             : "OOS";
+        const newBit = newMode === "new" ? " · new only" : "";
         countLabel.textContent =
-          "showing · " + bucket + " (of " + items.length + " catalogued)";
+          "showing · " +
+          bucket +
+          newBit +
+          " (of " +
+          items.length +
+          " in this tab)";
         filterHint.textContent =
           status === "include" &&
+          newMode === "all" &&
           verdict === "all" &&
           catSel.value === "all" &&
           !maxPriceEl.value &&
           !(searchEl.value || "").trim()
-            ? "Default: Include only (" + meta.include_count + ")"
+            ? "Default: Include only (" +
+              (meta.include_count || 0) +
+              ") · " +
+              (meta.new_includes || 0) +
+              " new vs prior run — tap New only"
+            : newMode === "new"
+            ? "New only: includes added this round vs prior board (" +
+              (meta.new_includes || 0) +
+              ")"
             : "Filters active";
 
         if (!matched.length) {
-          grid.innerHTML = '<div class="empty">No deals match these filters.</div>';
+          grid.innerHTML =
+            '<div class="empty">No deals match these filters.</div>';
         } else {
-          // Render in chunks to keep first paint snappy for large "All"
           const CHUNK = 120;
           let i = 0;
           grid.innerHTML = "";
@@ -640,10 +832,7 @@
             const end = Math.min(i + CHUNK, matched.length);
             const frag = document.createDocumentFragment();
             const wrap = document.createElement("div");
-            wrap.innerHTML = matched
-              .slice(i, end)
-              .map(cardHtml)
-              .join("");
+            wrap.innerHTML = matched.slice(i, end).map(cardHtml).join("");
             while (wrap.firstChild) frag.appendChild(wrap.firstChild);
             grid.appendChild(frag);
             i = end;
@@ -658,6 +847,13 @@
         }
       }
 
+      // Init from active round
+      if (roundsMap[activeRound]) {
+        meta = roundsMap[activeRound].meta || meta;
+        items = roundsMap[activeRound].items || items;
+      }
+      paintChrome();
+      rebuildCategories();
       render();
     })();
   </script>
