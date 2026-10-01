@@ -575,7 +575,7 @@
           " · near-ATL " +
           (v["near-ATL"] || 0) +
           " · real-discount " +
-          (v["real-discount"] || 0) +
+          ((v["real-discount"] || 0) + (v["real-discount-not-ATL"] || 0)) +
           " · insufficient-history " +
           (v["insufficient-history"] || 0) +
           ". New includes vs prior run: " +
@@ -673,14 +673,22 @@
         );
       }
 
+      // Map filter/display buckets. Keep ATL / near-ATL / insufficient-history separate.
+      // Round data uses real-discount-not-ATL for non-ATL real discounts.
+      function normalizeVerdict(v) {
+        if (v === "real-discount-not-ATL") return "real-discount";
+        return v;
+      }
+
       function verdictBadge(v, st) {
         if (st === "oos") return '<span class="badge oos">OOS</span>';
         if (st === "exclude") return '<span class="badge excl">Exclude</span>';
-        if (v === "ATL") return '<span class="badge atl">ATL</span>';
-        if (v === "near-ATL") return '<span class="badge near">Near-ATL</span>';
-        if (v === "real-discount")
+        const nv = normalizeVerdict(v);
+        if (nv === "ATL") return '<span class="badge atl">ATL</span>';
+        if (nv === "near-ATL") return '<span class="badge near">Near-ATL</span>';
+        if (nv === "real-discount")
           return '<span class="badge real">Real discount</span>';
-        if (v === "insufficient-history")
+        if (nv === "insufficient-history")
           return '<span class="badge">Insufficient history</span>';
         if (v) return '<span class="badge">' + escapeHtml(v) + "</span>";
         return "";
@@ -689,7 +697,7 @@
       function matches(item) {
         if (status !== "all" && item.status !== status) return false;
         if (newMode === "new" && !item.is_new) return false;
-        if (verdict !== "all" && item.verdict !== verdict) return false;
+        if (verdict !== "all" && normalizeVerdict(item.verdict) !== verdict) return false;
         const cat = catSel.value;
         if (cat !== "all" && (item.category || "Other") !== cat) return false;
         const maxP = parseFloat(maxPriceEl.value);
