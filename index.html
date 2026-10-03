@@ -604,7 +604,10 @@
       let category = "all";
       function rebuildCategories() {
         const counts = new Map();
+        let statusCount = 0;
         items.forEach(function (i) {
+          if (status !== "all" && i.status !== status) return;
+          statusCount++;
           const c = i.category || "Other";
           counts.set(c, (counts.get(c) || 0) + 1);
         });
@@ -619,7 +622,7 @@
           '<button type="button" data-cat="all" aria-pressed="' +
           allPressed +
           '">All categories (' +
-          items.length +
+          statusCount +
           ")</button>" +
           cats
             .map(function (c) {
@@ -667,6 +670,7 @@
           statusBtns.forEach(function (b) {
             b.setAttribute("aria-pressed", String(b === btn));
           });
+          rebuildCategories();
           render();
         });
       });
