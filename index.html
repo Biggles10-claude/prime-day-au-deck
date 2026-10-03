@@ -404,11 +404,22 @@
           <button type="button" data-verdict="insufficient-history" aria-pressed="false">Insufficient hist.</button>
         </div>
       </div>
+      <div class="filter-row">
+        <label class="lbl" id="category-lbl">Category</label>
+        <div class="seg" role="group" aria-labelledby="category-lbl" id="category-seg"></div>
+      </div>
+      <div class="filter-row">
+        <label class="lbl" id="sort-lbl">Sort</label>
+        <div class="seg" role="group" aria-labelledby="sort-lbl" id="sort-seg">
+          <button type="button" data-sort="default" aria-pressed="true">Default (current snapshot order)</button>
+          <button type="button" data-sort="price-asc" aria-pressed="false">Price: low to high</button>
+          <button type="button" data-sort="price-desc" aria-pressed="false">Price: high to low</button>
+          <button type="button" data-sort="discount-desc" aria-pressed="false">Discount $: largest first</button>
+          <button type="button" data-sort="pct-desc" aria-pressed="false">Percent off: largest first</button>
+          <button type="button" data-sort="category" aria-pressed="false">Category A–Z</button>
+        </div>
+      </div>
       <div class="controls">
-        <label class="field">
-          <span>Category</span>
-          <select id="category"></select>
-        </label>
         <label class="field">
           <span>Max price (AUD)</span>
           <input type="number" id="max-price" min="0" step="1" placeholder="Any" inputmode="decimal" />
@@ -589,32 +600,51 @@
         paintTabs();
       }
 
-      const catSel = document.getElementById("category");
+      const catSeg = document.getElementById("category-seg");
+      let category = "all";
       function rebuildCategories() {
-        const cats = Array.from(
-          new Set(items.map(function (i) { return i.category || "Other"; }))
-        ).sort(function (a, b) {
+        const counts = new Map();
+        items.forEach(function (i) {
+          const c = i.category || "Other";
+          counts.set(c, (counts.get(c) || 0) + 1);
+        });
+        const cats = Array.from(counts.keys()).sort(function (a, b) {
           if (a === "Other") return 1;
           if (b === "Other") return -1;
           return a.localeCompare(b);
         });
-        const prev = catSel.value || "all";
-        catSel.innerHTML =
-          '<option value="all">All categories</option>' +
+        if (category !== "all" && !counts.has(category)) category = "all";
+        const allPressed = category === "all" ? "true" : "false";
+        catSeg.innerHTML =
+          '<button type="button" data-cat="all" aria-pressed="' +
+          allPressed +
+          '">All categories (' +
+          items.length +
+          ")</button>" +
           cats
             .map(function (c) {
               return (
-                '<option value="' +
+                '<button type="button" data-cat="' +
                 escapeAttr(c) +
+                '" aria-pressed="' +
+                (category === c ? "true" : "false") +
                 '">' +
                 escapeHtml(c) +
-                "</option>"
+                " (" +
+                counts.get(c) +
+                ")</button>"
               );
             })
             .join("");
-        if ([].some.call(catSel.options, function (o) { return o.value === prev; })) {
-          catSel.value = prev;
-        }
+        catSeg.querySelectorAll("button").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            category = btn.getAttribute("data-cat");
+            catSeg.querySelectorAll("button").forEach(function (b) {
+              b.setAttribute("aria-pressed", String(b === btn));
+            });
+            render();
+          });
+        });
       }
 
       let status = "include";
@@ -658,7 +688,17 @@
           render();
         });
       });
-      catSel.addEventListener("change", render);
+      const sortBtns = document.querySelectorAll("#sort-seg button");
+      let sortMode = "default";
+      sortBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          sortMode = btn.getAttribute("data-sort") || "default";
+          sortBtns.forEach(function (b) {
+            b.setAttribute("aria-pressed", String(b === btn));
+          });
+          render();
+        });
+      });
       maxPriceEl.addEventListener("input", render);
       searchEl.addEventListener("input", render);
 
@@ -698,8 +738,7 @@
         if (status !== "all" && item.status !== status) return false;
         if (newMode === "new" && !item.is_new) return false;
         if (verdict !== "all" && normalizeVerdict(item.verdict) !== verdict) return false;
-        const cat = catSel.value;
-        if (cat !== "all" && (item.category || "Other") !== cat) return false;
+        if (category !== "all" && (item.category || "Other") !== category) return false;
         const maxP = parseFloat(maxPriceEl.value);
         if (!isNaN(maxP) && maxP >= 0) {
           if (typeof item.sale !== "number" || item.sale > maxP) return false;
@@ -792,8 +831,71 @@
         );
       }
 
+      function finiteNumber(n) {
+        return typeof n === "number" && isFinite(n) ? n : null;
+      }
+      function discountDollars(item) {
+        const rrp = finiteNumber(item.rrp);
+        const sale = finiteNumber(item.sale);
+        if (rrp == null || sale == null || !(rrp > sale)) return null;
+        return rrp - sale;
+      }
+      function sortLabel() {
+        if (sortMode === "price-asc") return "Price: low to high";
+        if (sortMode === "price-desc") return "Price: high to low";
+        if (sortMode === "discount-desc") return "Discount $: largest first";
+        if (sortMode === "pct-desc") return "Percent off: largest first";
+        if (sortMode === "category") return "Category A–Z";
+        return "Default (current snapshot order)";
+      }
+      function sortedMatched(pairs) {
+        if (sortMode === "default") {
+          return pairs.map(function (p) { return p.item; });
+        }
+        const copy = pairs.slice();
+        const desc =
+          sortMode === "price-desc" ||
+          sortMode === "discount-desc" ||
+          sortMode === "pct-desc";
+        copy.sort(function (a, b) {
+          if (sortMode === "category") {
+            const ca = a.item.category || "Other";
+            const cb = b.item.category || "Other";
+            if (ca !== cb) {
+              if (ca === "Other") return 1;
+              if (cb === "Other") return -1;
+              const c = ca.localeCompare(cb);
+              if (c !== 0) return c;
+            }
+            return a.idx - b.idx;
+          }
+          let ka = null;
+          let kb = null;
+          if (sortMode === "price-asc" || sortMode === "price-desc") {
+            ka = finiteNumber(a.item.sale);
+            kb = finiteNumber(b.item.sale);
+          } else if (sortMode === "discount-desc") {
+            ka = discountDollars(a.item);
+            kb = discountDollars(b.item);
+          } else if (sortMode === "pct-desc") {
+            ka = finiteNumber(a.item.pct);
+            kb = finiteNumber(b.item.pct);
+          }
+          if (ka == null && kb == null) return a.idx - b.idx;
+          if (ka == null) return 1;
+          if (kb == null) return -1;
+          if (ka !== kb) return desc ? kb - ka : ka - kb;
+          return a.idx - b.idx;
+        });
+        return copy.map(function (p) { return p.item; });
+      }
+
       function render() {
-        const matched = items.filter(matches);
+        const pairs = [];
+        for (let i = 0; i < items.length; i++) {
+          if (matches(items[i])) pairs.push({ item: items[i], idx: i });
+        }
+        const matched = sortedMatched(pairs);
         visibleCount.textContent = String(matched.length);
         const bucket =
           status === "all"
@@ -811,13 +913,17 @@
           " (of " +
           items.length +
           " in this tab)";
-        filterHint.textContent =
+        const filtersDefault =
           status === "include" &&
           newMode === "all" &&
           verdict === "all" &&
-          catSel.value === "all" &&
+          category === "all" &&
           !maxPriceEl.value &&
-          !(searchEl.value || "").trim()
+          !(searchEl.value || "").trim();
+        const sortBit =
+          sortMode === "default" ? "" : " · sorted by " + sortLabel();
+        filterHint.textContent =
+          filtersDefault && sortMode === "default"
             ? "Default: Include only (" +
               (meta.include_count || 0) +
               ") · " +
@@ -826,8 +932,11 @@
             : newMode === "new"
             ? "New only: includes added this round vs prior board (" +
               (meta.new_includes || 0) +
-              ")"
-            : "Filters active";
+              ")" +
+              sortBit
+            : filtersDefault
+            ? "Sorted by " + sortLabel()
+            : "Filters active" + sortBit;
 
         if (!matched.length) {
           grid.innerHTML =
